@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><%- include('../partials/head') %></head>
+<body class="container">
+
+<header>
+    <%- include('../partials/header') %>
+</header>
+
+<main class="mt-3 mb-3">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="float-left"><%= title %></h4>
+                    <a href="/customer/create" class="btn btn-primary float-right">New Customer</a>
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Mobile</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">View</th>
+                                <th scope="col">Edit</th>
+                                <th scope="col">Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% customers.forEach((customer) => { %>
+                            <tr>
+                                <th scope="row">2</th>
+                                <td><%= customer.name %></td>
+                                <td><%= customer.mobile %></td>
+                                <td><%= customer.email %></td>
+                                <td>
+                                    <a href="/customer/view/<%=customer._id %>" class="btn btn-info">view</a>
+                                </td>
+                                <td>
+                                    <a href="/customer/update/<%=customer._id %>" class="btn btn-info">Edit</a>
+                                </td>
+                                <td>
+                                    <a href="/customer/delete/<%=customer._id %>" class="btn btn-danger">Delete</a>
+                                </td>
+                            </tr>
+                            <% }) %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>    
+</main>
+
+<footer>
+    <%- include('../partials/footer') %>
+</footer>
+
+</body>
+</html>
