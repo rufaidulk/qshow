@@ -9,7 +9,7 @@ mongoose.set('useCreateIndex', true);
 mongoose.set('useUnifiedTopology', true);
 
 //connect to db before start test
-before(function(done) {
+before((done) => {
 
 	//connect to database
 	mongoose.connect('mongodb://localhost:27017/crud');
@@ -33,12 +33,15 @@ beforeEach((done) => {
 			// });
 		// });
 	// });
-	mongoose.connection.db.dropCollection('event_shows', () => {
-		mongoose.connection.db.dropCollection('service_providers', () => {
-			mongoose.connection.db.dropCollection('customers', () => {
-				done();
-			})
+	
+	mongoose.connection.db.dropCollection('service_providers', () => {
+		mongoose.connection.db.dropCollection('customers', () => {
+			done();
 		})
 	});
 
 });
+
+after(() => {
+	mongoose.connection.close();
+})
