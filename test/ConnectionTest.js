@@ -24,7 +24,7 @@ before((done) => {
 });
 
 // drop the collections before each tests
-beforeEach((done) => {
+// beforeEach((done) => {
 
     // mongoose.connection.collections.customers.drop(() => {
 		// mongoose.connection.collections.event_shows.drop(() => {
@@ -34,13 +34,13 @@ beforeEach((done) => {
 		// });
 	// });
 	
-	mongoose.connection.db.dropCollection('service_providers', () => {
-		mongoose.connection.db.dropCollection('customers', () => {
-			done();
-		})
-	});
+	// mongoose.connection.db.dropCollection('service_providers', () => {
+	// 	mongoose.connection.db.dropCollection('customers', () => {
+	// 		done();
+	// 	})
+	// });
 
-});
+// });
 
 after(() => {
 	mongoose.connection.close();

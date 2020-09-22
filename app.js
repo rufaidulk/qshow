@@ -20,6 +20,7 @@ mongoose.connection.once('open', () => {
 });
 
 const customerRouter = require('./routes/customer');
+const serviceProviderRouter = require('./routes/serviceProvider');
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -27,6 +28,7 @@ app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended: false }));
 
 app.use('/', customerRouter);
+app.use('/', serviceProviderRouter);
 
 app.listen(port);
 console.log('Server listening at port http://localhost:' + port);
