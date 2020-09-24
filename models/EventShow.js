@@ -1,10 +1,9 @@
 const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+const ServiceProvider = require('../models/ServiceProvider');
 
 const categorySchema = new mongoose.Schema({
     name: {
         type: String,
-        unique: true,
         required: true
     },
     numOfSeats: {
@@ -18,9 +17,12 @@ const categorySchema = new mongoose.Schema({
 });
 
 const eventShowSchema = new mongoose.Schema({
+    serviceProvider: {
+        type: ServiceProvider.schema,
+        required: true
+    },
     name: {
         type: String,
-        unique: true,
         index: true,
         required: true
     },
@@ -38,6 +40,8 @@ const eventShowSchema = new mongoose.Schema({
     },
     categories: [categorySchema]
 });
+
+eventShowSchema.index({serviceProvider: 1, name: 1, date: 1}, {unique: true});
 
 const EventShow = mongoose.model('event_show', eventShowSchema);
 

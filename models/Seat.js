@@ -10,11 +10,11 @@ const seatSchema = new mongoose.Schema({
         required: true
     },
     seatNumber: {
-        type: Number,
+        type: String,
         required: true
     },
     status: {
-        type: Number,
+        type: String,
         required: true
     }
 });
