@@ -14,8 +14,8 @@
                 <div class="card-header">
                     <h4 class="float-left"><%= title %></h4>
                     <div class="float-right">
-                        <a href="/service-provider/update/<%= serviceProvider._id %>" class="btn btn-info">Update</a>
-                        <a href="/service-provider/delete/<%= serviceProvider._id %>" class="btn btn-danger">Delete</a>
+                        <a href="/event-show/update/<%= eventShow._id %>" class="btn btn-info">Update</a>
+                        <a href="/event-show/delete/<%= eventShow._id %>" class="btn btn-danger">Delete</a>
                     </div>
                 </div>
                 <div class="card-body">
@@ -23,20 +23,52 @@
                         <tbody>
                             <tr>
                                 <th scope="col">Name</th>
-                                <td><%= serviceProvider.name %></td>
+                                <td><%= eventShow.name %></td>
                             </tr>
                             <tr>
-                                <th scope="col">Mobile</th> 
-                                <td><%= serviceProvider.mobile %></td>
+                                <th scope="col">Service Provider</th>
+                                <td><%= eventShow.serviceProvider.name %></td>
                             </tr>
                             <tr>
-                                <th scope="col">Email</th>
-                                <td><%= serviceProvider.email %></td>
+                                <th scope="col">Start Time</th> 
+                                <td><%= eventShow.startTime.toLocaleTimeString() %></td>
                             </tr>
                             <tr>
-                                <th scope="col">Service Charge</th>
-                                <td><%= serviceProvider.serviceCharge %></td>
+                                <th scope="col">End Time</th> 
+                                <td><%= eventShow.endTime.toLocaleTimeString() %></td>
                             </tr>
+                            <tr>
+                                <th scope="col">Date</th> 
+                                <td><%= eventShow.date.toLocaleDateString() %></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-12 mt-4">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="float-left">Category Details</h4>
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered">
+                        <thead>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Number of seats</th>
+                            <th>Price</th>
+                        </thead>
+                        <tbody>
+                            <% eventShow.categories.forEach((category) => { %>
+                                <tr>
+                                    <td>--</td>
+                                    <td><%= category.name %></td>
+                                    <td><%= category.numOfSeats %></td>
+                                    <td><%= category.rate %></td>
+                                </tr>
+                            <% }) %>
                         </tbody>
                     </table>
                 </div>

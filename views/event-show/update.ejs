@@ -8,41 +8,146 @@
 </header>
 
 <main class="mt-3 mb-3">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-header">
-                    <h4><%= title %></h4>
-                </div>
-                <div class="card-body">
-                    <form action="/service-provider/update/<%= serviceProvider._id %>" method="POST">
+    <form action="/event-show/update/<%= eventShow._id %>" method="POST">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4><%= title %></h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label>Service provider</label>
+                            <select name="serviceProviderId" class="form-control select">
+                                <option>Select a service provider</option>
+                            <% serviceProviders.forEach((serviceProvider) => { 
+                                let selected = '';    
+                                if (serviceProvider._id.equals(eventShow.serviceProvider._id)) {
+                                    selected = 'selected';
+                                }
+                            %>
+                                <option value="<%= serviceProvider._id %>" <%= selected %>>
+                                    <%= serviceProvider.name + '-' + serviceProvider.mobile %>
+                                </option>
+                            <% }) %>
+                            </select>
+                        </div>
                         <div class="form-group">
                             <label>Name</label>
-                            <input type="text" class="form-control" name="name" value="<%= serviceProvider.name %>">
+                            <input type="text" class="form-control" name="name" value="<%= eventShow.name %>">
                         </div>
                         <div class="form-group">
-                            <label>Mobile</label>
-                            <input type="text" class="form-control" name="mobile" value="<%= serviceProvider.mobile %>">
+                            <label>Start Time</label>
+                            <input type="time" class="form-control" name="startTime" value="<%= currentStartTime %>">
                         </div>
                         <div class="form-group">
-                            <label>Email</label>
-                            <input type="email" class="form-control" name="email" value="<%= serviceProvider.email %>">
+                            <label>End Time</label>
+                            <input type="time" class="form-control" name="endTime" value="<%= currentEndTime %>">
                         </div>
                         <div class="form-group">
-                            <label>Service Charge</label>
-                            <input type="text" class="form-control" name="serviceCharge" value="<%= serviceProvider.serviceCharge %>">
+                            <label>Date</label>
+                            <input type="date" class="form-control" name="date" value="<%= currentDate %>">
                         </div>
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                    </form>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>    
+        
+            <div class="col-md-12 mt-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="float-left">Seat Categories</h4>
+                        <div class="float-right">
+                            <button type="button" class="btn btn-success" onclick="addCategory()">Add</button>
+                            <button type="button" class="btn btn-danger" onclick="removeCategory()">Remove</button>
+                        </div>
+                    </div>
+                    <div id="category_divs" class="card-body">
+                    <% eventShow.categories.forEach((category, index) => { %>
+                        <div id="category_<%= index + 1 %>">
+                            <h5>Category <%= index + 1 %></h5>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Name</label>
+                                        <input type="text" class="form-control" name="categoryNames" value="<%= category.name %>">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Number of seats</label>
+                                        <input type="text" class="form-control" name="numOfSeats" value="<%= category.numOfSeats %>">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Price</label>
+                                        <input type="text" class="form-control" name="prices" value="<%= category.rate %>">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <% }) %>
+                    </div>
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div> 
+    </form>
 </main>
+
+<div id="single_category_div" style="display: none;">
+    <h5 class="category-div-title"></h5>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <label>Name</label>
+                <input type="text" class="form-control" name="categoryNames">
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label>Number of seats</label>
+                <input type="text" class="form-control" name="numOfSeats">
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label>Price</label>
+                <input type="text" class="form-control" name="prices">
+            </div>
+        </div>
+    </div>
+</div>
 
 <footer>
     <%- include('../partials/footer') %>
 </footer>
+
+<script>
+
+let numOfCategories = <%= eventShow.categories.length %>;
+function addCategory()
+{
+    let currentCategoryNum = ++numOfCategories;
+    $("#single_category_div").find(".category-div-title").text("Category " + currentCategoryNum);
+    let html = "<div id='category_" + currentCategoryNum + "' >" + $("#single_category_div").html() + 
+        "</div>";
+    $("#category_divs").append(html);
+}
+
+function removeCategory()
+{
+    if (numOfCategories == 1) {
+        return;
+    }
+
+    $("#category_" + numOfCategories).remove();
+    numOfCategories--;
+}
+
+</script>
 
 </body>
 </html>

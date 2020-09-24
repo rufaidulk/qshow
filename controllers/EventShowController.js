@@ -27,38 +27,114 @@ exports.store = async (req, res) => {
     }
 };
 
-exports.edit = (req, res) => {
-    ServiceProvider.findOne({_id: req.params.id}).then((result) => {
-        res.render('event-show/update', {
-            title: 'Update Service Provider: ' + result.name.toUpperCase(), 
-            serviceProvider: result
-        });
-    })
-};
+exports.edit = async (req, res) => {
+    let serviceProviders = await ServiceProvider.find().select(['name', 'mobile']);
+    let eventShow = await EventShow.findOne({_id: req.params.id});
+    let currentStartTime = ("0" + eventShow.startTime.getHours()).slice(-2) + ":" + 
+        ("0" + eventShow.startTime.getMinutes()).slice(-2);
+    let currentEndTime = ("0" + eventShow.endTime.getHours()).slice(-2) + ":" + 
+        ("0" + eventShow.endTime.getMinutes()).slice(-2);
 
-exports.update = (req, res) => {
-    ServiceProvider.findOneAndUpdate({_id: req.params.id}, req.body).then(() => {
-        res.redirect('/event-show/index');
+    const offset = eventShow.date.getTimezoneOffset();
+    let currentDate = new Date(eventShow.date.getTime() + (offset*60*1000));
+    currentDate = currentDate.toISOString().split('T')[0];
+    
+    res.render('event-show/update', {
+        title: 'Update Event: ' + eventShow.name.toUpperCase(), 
+        eventShow: eventShow,
+        serviceProviders: serviceProviders,
+        currentStartTime: currentStartTime,
+        currentEndTime: currentEndTime,
+        currentDate: currentDate
     });
 };
 
-exports.delete = (req, res) => {
-    ServiceProvider.findOneAndRemove({_id: req.params.id}).then(() => {
+exports.update = async (req, res) => {
+    try
+    {
+        let eventShow = await updateEventShow(req);
+        await Seat.deleteMany({eventShowId: eventShow._id});
+        await saveSeats(eventShow);
+     
         res.redirect('/event-show/index');
-    })
+    }
+    catch(error) {
+        console.log(error.message);
+    }
+};
+
+exports.delete = async (req, res) => {
+    
+    try
+    {
+        await EventShow.findOneAndRemove({_id: req.params.id});
+        await Seat.deleteMany({eventShowId: req.params.id});
+
+        res.redirect('/event-show/index');
+    }
+    catch(error) {
+        console.log(error.message);
+    }
 };
 
 exports.view = (req, res) => {
-    ServiceProvider.findOne({_id: req.params.id}).then((result) => {
+    EventShow.findOne({_id: req.params.id}).then((result) => {
         res.render('event-show/view', {
-            title: 'View Service Provider: ' + result.name,
-            serviceProvider: result
+            title: 'View Event: ' + result.name,
+            eventShow: result
         });
     });
 };
 
 async function saveEventShow(req)
 {
+    let categories = await getRequestedCategories(req);
+
+    let serviceProvider = await ServiceProvider.findOne({_id: req.body.serviceProviderId});
+    let eventShow = new EventShow({
+        serviceProvider: serviceProvider,
+        name: req.body.name,
+        startTime: req.body.date + ' ' + req.body.startTime,
+        endTime: req.body.date + ' ' + req.body.endTime,
+        date: req.body.date,
+        categories: categories
+    });
+
+    await eventShow.save();
+
+    return eventShow;
+}
+
+async function updateEventShow(req)
+{
+    let categories = await getRequestedCategories(req);
+
+    let serviceProvider = await ServiceProvider.findOne({_id: req.body.serviceProviderId});
+    let reqEventShow = {
+        serviceProvider: serviceProvider,
+        name: req.body.name,
+        startTime: req.body.date + ' ' + req.body.startTime,
+        endTime: req.body.date + ' ' + req.body.endTime,
+        date: req.body.date,
+        categories: categories
+    };
+
+    let eventShow = await EventShow.findOneAndUpdate({_id: req.params.id}, reqEventShow, {new: true});
+
+    return eventShow;
+}
+
+async function getRequestedCategories(req)
+{
+    if (! Array.isArray(req.body.categoryNames))
+    {
+        return [{
+            name: req.body.categoryNames,
+            numOfSeats: req.body.numOfSeats,
+            rate: req.body.prices
+        }];
+    }
+
     let categories = [];
     let categoryNames = req.body.categoryNames.filter(Boolean);
     if ((new Set(categoryNames)).size  !== categoryNames.length) {
@@ -74,19 +150,7 @@ async function saveEventShow(req)
         });
     }
 
-    let serviceProvider = await ServiceProvider.findOne({_id: req.body.serviceProviderId});
-    let eventShow = new EventShow({
-        serviceProvider: serviceProvider,
-        name: req.body.name,
-        startTime: req.body.date + ' ' + req.body.startTime,
-        endTime: req.body.date + ' ' + req.body.endTime,
-        date: req.body.date,
-        categories: categories
-    });
-
-    await eventShow.save();
-
-    return eventShow;
+    return categories;
 }
 
 async function saveSeats(eventShow)

@@ -50,51 +50,38 @@
             <div class="col-md-12 mt-4">
                 <div class="card">
                     <div class="card-header">
-                        <h4>Seat Categories</h4>
+                        <h4 class="float-left">Seat Categories</h4>
+                        <div class="float-right">
+                            <button type="button" class="btn btn-success" onclick="addCategory()">Add</button>
+                            <button type="button" class="btn btn-danger" onclick="removeCategory()">Remove</button>
+                        </div>
                     </div>
-                    <div class="card-body">
-                        <h5>Category 1</h5>
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label>Name</label>
-                                    <input type="text" class="form-control" name="categoryNames">
+                    <div id="category_divs" class="card-body">
+                        <div id="category_1">
+                            <h5>Category 1</h5>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Name</label>
+                                        <input type="text" class="form-control" name="categoryNames">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label>Number of seats</label>
-                                    <input type="text" class="form-control" name="numOfSeats">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Number of seats</label>
+                                        <input type="text" class="form-control" name="numOfSeats">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label>Price</label>
-                                    <input type="text" class="form-control" name="prices">
-                                </div>
-                            </div>
-                        </div>
-                        <h5>Category 2</h5>
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label>Name</label>
-                                    <input type="text" class="form-control" name="categoryNames">
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label>Number of seats</label>
-                                    <input type="text" class="form-control" name="numOfSeats">
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="form-group">
-                                    <label>Price</label>
-                                    <input type="text" class="form-control" name="prices">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label>Price</label>
+                                        <input type="text" class="form-control" name="prices">
+                                    </div>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div class="card-footer">
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </div>
                 </div>
@@ -103,11 +90,55 @@
     </form>
 </main>
 
+<div id="single_category_div" style="display: none;">
+    <h5 class="category-div-title"></h5>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <label>Name</label>
+                <input type="text" class="form-control" name="categoryNames">
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label>Number of seats</label>
+                <input type="text" class="form-control" name="numOfSeats">
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label>Price</label>
+                <input type="text" class="form-control" name="prices">
+            </div>
+        </div>
+    </div>
+</div>
+
 <footer>
     <%- include('../partials/footer') %>
 </footer>
 
 <script>
+
+let numOfCategories = 1;
+function addCategory()
+{
+    let currentCategoryNum = ++numOfCategories;
+    $("#single_category_div").find(".category-div-title").text("Category " + currentCategoryNum);
+    let html = "<div id='category_" + currentCategoryNum + "' >" + $("#single_category_div").html() + 
+        "</div>";
+    $("#category_divs").append(html);
+}
+
+function removeCategory()
+{
+    if (numOfCategories == 1) {
+        return;
+    }
+
+    $("#category_" + numOfCategories).remove();
+    numOfCategories--;
+}
 
 </script>
 
