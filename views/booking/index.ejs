@@ -13,8 +13,8 @@
             <div class="card">
                 <div class="card-header">
                     <h4 class="float-left"><%= title %></h4>
-                    <a href="/event-show/create" class="btn btn-primary float-right">
-                        New Event
+                    <a href="/booking/create" class="btn btn-primary float-right">
+                        New Booking
                     </a>
                 </div>
                 <div class="card-body">
@@ -22,41 +22,43 @@
                         <thead>
                             <tr>
                                 <th scope="col">#</th>
+                                <th scope="col">Booking Number</th>
                                 <th scope="col">Service Provider</th>
+                                <th scope="col">Customer</th>
                                 <th scope="col">Event</th>
                                 <th scope="col">Start Time</th>
                                 <th scope="col">End Time</th>
                                 <th scope="col">Date</th>
-                                <th scope="col">View</th>
-                                <th scope="col">Edit</th>
+                                <th scope="col">Seat Number</th>
+                                <th scope="col">Seat Categpry</th>
+                                <th scope="col">Seat Price</th>
                                 <th scope="col">Delete</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <% eventShows.forEach((eventShow, index) => { %>
+                            <% bookings.forEach((booking, index) => { %>
                             <tr>
                                 <th scope="row"><%= index + 1 %></th>
+                                <td><%= booking.bookingNumber %></td>
                                 <td>
-                                    <a href="/service-provider/view/<%=eventShow.serviceProvider._id %>">
-                                        <%= eventShow.serviceProvider.name %>
-                                    </a>
-                                </td>
-                                <td><%= eventShow.name %></td>
-                                <td><%= eventShow.startTime.toLocaleTimeString() %></td>
-                                <td><%= eventShow.endTime.toLocaleTimeString() %></td>
-                                <td><%= eventShow.date.toLocaleDateString() %></td>
-                                <td>
-                                    <a href="/event-show/view/<%=eventShow._id %>" class="btn btn-info">
-                                        view
+                                    <a href="/service-provider/view/<%=booking.eventShow.serviceProvider._id %>">
+                                        <%= booking.eventShow.serviceProvider.name %>
                                     </a>
                                 </td>
                                 <td>
-                                    <a href="/event-show/update/<%=eventShow._id %>" class="btn btn-info">
-                                        Edit
+                                    <a href="/customer/view/<%=booking.customer._id %>">
+                                        <%= booking.customer.name %>
                                     </a>
                                 </td>
+                                <td><%= booking.eventShow.name %></td>
+                                <td><%= booking.eventShow.startTime.toLocaleTimeString() %></td>
+                                <td><%= booking.eventShow.endTime.toLocaleTimeString() %></td>
+                                <td><%= booking.eventShow.date.toLocaleDateString() %></td>
+                                <td><%= booking.seatNumber %></td>
+                                <td><%= booking.seatCategory.name %></td>
+                                <td><%= booking.seatCategory.rate %></td>
                                 <td>
-                                    <a href="/event-show/delete/<%=eventShow._id %>" class="btn btn-danger">
+                                    <a href="/booking/delete/<%=booking._id %>" class="btn btn-danger">
                                         Delete
                                     </a>
                                 </td>

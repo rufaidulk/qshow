@@ -8,7 +8,7 @@
 </header>
 
 <main class="mt-3 mb-3">
-    <form action="/event-show/create" method="POST">
+    <form action="/booking/create" method="POST">
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
@@ -17,6 +17,19 @@
                     </div>
                     <div class="card-body">
                         <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Customers</label>
+                                    <select name="customerId" class="form-control select">
+                                        <option>Select a customer</option>
+                                    <% customers.forEach((customer) => { %>
+                                        <option value="<%= customer._id %>">
+                                            <%= customer.name + '-' + customer.mobile %>
+                                        </option>
+                                    <% }) %>
+                                    </select>
+                                </div>
+                            </div>
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label>Service provider</label>
@@ -57,6 +70,9 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-primary">Submit</button>
                     </div>
                 </div>
             </div>
