@@ -19,6 +19,7 @@ mongoose.connection.once('open', () => {
     console.log(error);
 });
 
+const siteRouter = require('./routes/site');
 const customerRouter = require('./routes/customer');
 const serviceProviderRouter = require('./routes/serviceProvider');
 const eventShowRouter = require('./routes/eventShow');
@@ -31,6 +32,7 @@ app.use('/jquery', express.static(__dirname + '/node_modules/jquery/dist/'));
 
 app.use(express.urlencoded({ extended: false }));
 
+app.use('/', siteRouter);
 app.use('/', customerRouter);
 app.use('/', serviceProviderRouter);
 app.use('/', eventShowRouter);
