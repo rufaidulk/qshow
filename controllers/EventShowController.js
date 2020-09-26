@@ -175,7 +175,7 @@ async function saveSeats(eventShow)
         {
             seats.push({
                 eventShowId: eventShow._id,
-                categoryId: category._id,
+                category: category,
                 seatNumber: seatPrefix + i,
                 status: 'active'
             });

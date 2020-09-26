@@ -1,12 +1,27 @@
 const mongoose = require('mongoose');
 
+const categorySchema = new mongoose.Schema({
+    name: {
+        type: String,
+        required: true
+    },
+    numOfSeats: {
+        type: Number,
+        required: true
+    },
+    rate: {
+        type: Number,
+        required: true
+    }
+});
+
 const seatSchema = new mongoose.Schema({
     eventShowId: {
         type: mongoose.ObjectId,
         required: true
     },
-    categoryId: {
-        type: mongoose.ObjectId,
+    category: {
+        type: categorySchema,
         required: true
     },
     seatNumber: {
