@@ -1,14 +1,14 @@
 {
-	"name": "crud",
+  	"name": "qshow",
 	"version": "1.0.0",
-	"description": "a simple crud operation",
+	"description": "an event booking system",
 	"main": "app.js",
 	"scripts": {
 		"test": "mocha",
 		"dev": "nodemon app.js"
 	},
-	"author": "",
-	"license": "ISC",
+	"author": "rufaidulk",
+	"license": "MIT",
 	"dependencies": {
 		"ejs": "^3.1.5",
 		"express": "^4.17.1",
@@ -16,5 +16,20 @@
 		"mocha": "^8.1.3",
 		"mongoose": "^5.10.4",
 		"nodemon": "^2.0.4"
-	}
+	},
+	"directories": {
+		"test": "test"
+	},
+	"devDependencies": {},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/rufaidulk/qshow.git"
+	},
+	"keywords": [
+		"booking"
+	],
+	"bugs": {
+		"url": "https://github.com/rufaidulk/qshow/issues"
+	},
+	"homepage": "https://github.com/rufaidulk/qshow#readme"
 }
