@@ -10,5 +10,6 @@ router.get('/event-show/update/:id', eventShowController.edit);
 router.post('/event-show/update/:id', eventShowController.update);
 router.get('/event-show/delete/:id', eventShowController.delete);
 router.get('/event-show/view/:id', eventShowController.view);
+router.get('/event-show/list', eventShowController.list);
 
 module.exports = router;

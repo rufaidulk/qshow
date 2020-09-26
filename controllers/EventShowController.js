@@ -1,6 +1,7 @@
 const EventShow = require('../models/EventShow.js');
 const Seat = require('../models/Seat.js');
 const ServiceProvider = require('../models/ServiceProvider');
+const mongoose = require('mongoose');
 
 exports.index = (req, res) => {
     EventShow.find().then((result) => {
@@ -16,7 +17,6 @@ exports.create = async (req, res) => {
 exports.store = async (req, res) => {
     try
     {
-        console.log(req.body);
         let eventShow = await saveEventShow(req);
         await saveSeats(eventShow);
         
@@ -84,6 +84,17 @@ exports.view = (req, res) => {
             eventShow: result
         });
     });
+};
+
+exports.list = async (req, res) => {
+    
+    let id = mongoose.Types.ObjectId(req.query.service_provider_id);
+    let eventShows = await EventShow.aggregate().match({
+        'serviceProvider._id': id,
+        'date': new Date(req.query.date)
+    }).project('name');
+
+    res.json(eventShows);
 };
 
 async function saveEventShow(req)

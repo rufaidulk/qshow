@@ -23,6 +23,8 @@ const siteRouter = require('./routes/site');
 const customerRouter = require('./routes/customer');
 const serviceProviderRouter = require('./routes/serviceProvider');
 const eventShowRouter = require('./routes/eventShow');
+const bookingRouter = require('./routes/booking');
+const seatRouter = require('./routes/seat');
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -36,6 +38,8 @@ app.use('/', siteRouter);
 app.use('/', customerRouter);
 app.use('/', serviceProviderRouter);
 app.use('/', eventShowRouter);
+app.use('/', bookingRouter);
+app.use('/', seatRouter);
 
 app.listen(port);
 console.log('Server listening at port http://localhost:' + port);
